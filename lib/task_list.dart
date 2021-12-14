@@ -31,6 +31,30 @@ class _TaskListState extends State<TaskList> {
     )); 
   }
 
+  void _addTask(context) async {
+    final _task = await Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context,animation,secondaryAnimation) {
+          return const AddTaskPage(title: "add task"); 
+        }, 
+        transitionsBuilder: (context,animation,secandaryAnimation,child) {
+          final Animatable<Offset> tween = Tween(  
+            begin: const Offset(1.0,0.0), 
+            end: const Offset(0,0), 
+          ).chain(CurveTween(curve: Curves.easeInOut)); 
+          final Animation<Offset> offsetAnimation = animation.drive(tween); 
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child
+          ); 
+        }
+      )
+    ); 
+    setState(() {
+      tasks.add(_task); 
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,11 +83,7 @@ class _TaskListState extends State<TaskList> {
               },
             )),
             InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AddTaskPage(title: "a");
-                  }));
-                },
+                onTap: ()=>_addTask(context), 
                 child: Row(
                   children: const [Icon(Icons.add), Text("New Task")],
                 ))
