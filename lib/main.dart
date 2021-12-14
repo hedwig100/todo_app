@@ -42,10 +42,10 @@ class _MyTodoAppState extends State<MyTodoApp> {
 
   void _addTaskList(context) async {
     final _taskTile = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const TaskList(
+      return TaskList(
           listName: "New Task List", 
-          tasks: <Task>[]
-      );
+          tasks: []
+      ); 
     }));
 
     setState((){

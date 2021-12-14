@@ -3,7 +3,7 @@ import "package:todo_app/add_task.dart";
 import "package:todo_app/task.dart";
 
 class TaskList extends StatefulWidget {
-  const TaskList({Key? key, required this.tasks, required this.listName})
+  const TaskList({Key? key,required this.tasks,required this.listName})
       : super(key: key);
   final List<Task> tasks;
   final String listName;
@@ -12,22 +12,22 @@ class TaskList extends StatefulWidget {
   _TaskListState createState() => _TaskListState();
 }
 
-class _TaskListState extends State<TaskList> {
-  late List<Task> tasks;
-  late String listName;
+class _TaskListState extends State<TaskList> { 
+  late List<Task> _tasks;
+  late String _listName;
 
   @override
   void initState() {
-    tasks = widget.tasks;
-    listName = widget.listName;
     super.initState();
+    _tasks = widget.tasks; 
+    _listName = widget.listName;
   }
 
   void _backHome(context) {
     Navigator.of(context).pop(TaskTile(  
       Icons.blur_on_outlined, 
-      listName, 
-      tasks
+      _listName, 
+      _tasks
     )); 
   }
 
@@ -49,9 +49,9 @@ class _TaskListState extends State<TaskList> {
           ); 
         }
       )
-    ); 
+    );  
     setState(() {
-      tasks.add(_task); 
+      _tasks.add(_task); 
     });
   }
 
@@ -67,17 +67,17 @@ class _TaskListState extends State<TaskList> {
         ),
         body: Column(
           children: [
-            Text(listName, style: const TextStyle(fontSize: 30)),
+            Text(_listName, style: const TextStyle(fontSize: 30)),
             Flexible(
                 child: ListView.builder(
-              itemCount: tasks.length,
+              itemCount: _tasks.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: Checkbox(  
-                    value: tasks[index].isDone,
-                    onChanged: (e) => {setState((){tasks[index].isDone = e!;})},
+                    value: _tasks[index].isDone,
+                    onChanged: (e) => {setState((){_tasks[index].isDone = e!;})},
                   ),
-                  title: Text(tasks[index].taskName),
+                  title: Text(_tasks[index].taskName),
                   trailing: const Icon(Icons.star),
                 );
               },
