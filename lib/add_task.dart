@@ -75,7 +75,7 @@ class _TaskFormState extends State<TaskForm> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Task task = Task(_inputTaskName,_inputDeadline); 
+                  Task task = Task(_inputTaskName,_inputDeadline,false); 
                   Navigator.pop(context,task); 
                 }
               }, 
