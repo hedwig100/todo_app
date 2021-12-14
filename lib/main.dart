@@ -40,6 +40,19 @@ class _MyTodoAppState extends State<MyTodoApp> {
     ])
   ];
 
+  void _addTaskList(context) async {
+    final _taskTile = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const TaskList(
+          listName: "New Task List", 
+          tasks: <Task>[]
+      );
+    }));
+
+    setState((){
+      _taskLists.add(_taskTile); 
+    }); 
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,12 +95,13 @@ class _MyTodoAppState extends State<MyTodoApp> {
                       );
                     })),
             InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const TaskList(
-                        listName: "New Task List", tasks: <Task>[]);
-                  }));
-                },
+                // onTap: () {
+                //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //     return const TaskList(
+                //         listName: "New Task List", tasks: <Task>[]);
+                //   }));
+                // },
+                onTap: () => _addTaskList(context), 
                 child: Row(
                   children: const [Icon(Icons.add), Text("New List")],
                 ))
