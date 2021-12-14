@@ -109,11 +109,3 @@ class _MyTodoAppState extends State<MyTodoApp> {
         ));
   }
 }
-
-class TaskTile extends Object {
-  final IconData icon;
-  final String listName;
-  final List<Task> tasks;
-
-  TaskTile(this.icon, this.listName, this.tasks);
-}

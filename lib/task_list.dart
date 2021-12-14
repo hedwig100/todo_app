@@ -23,10 +23,22 @@ class _TaskListState extends State<TaskList> {
     super.initState();
   }
 
+  void _backHome(context) {
+    Navigator.of(context).pop(TaskTile(  
+      Icons.blur_on_outlined, 
+      listName, 
+      tasks
+    )); 
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar( 
+            leading: TextButton(  
+              child: const Icon(Icons.arrow_back,color: Colors.white),
+              onPressed: () => _backHome(context),
+            ),
             title: const Text("Home")
         ),
         body: Column(

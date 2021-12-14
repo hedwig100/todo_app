@@ -1,9 +1,19 @@
+import "package:flutter/material.dart"; 
+
 class Task extends Object {
   final String taskName;
   final String deadline;
   bool isDone;
 
   Task(this.taskName, this.deadline, this.isDone);
+}
+
+class TaskTile extends Object {
+  final IconData icon;
+  final String listName;
+  final List<Task> tasks;
+
+  TaskTile(this.icon, this.listName, this.tasks);
 }
 
 // class TaskCard extends StatelessWidget {
