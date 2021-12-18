@@ -48,9 +48,11 @@ class _MyTodoAppState extends State<MyTodoApp> {
       ); 
     }));
 
-    setState((){
-      _taskLists.add(_taskTile); 
-    }); 
+    if (!_taskTile.tasks.isEmpty) {
+      setState((){
+        _taskLists.add(_taskTile); 
+      }); 
+    }
   }
 
   Widget _itemBuilder(context,index) {
