@@ -111,10 +111,14 @@ class _TaskListState extends State<TaskList> {
               itemBuilder: _itemBuilder,
             )),
             InkWell(
-                onTap: ()=>_addTask(context), 
-                child: Row(
-                  children: const [Icon(Icons.add), Text("New Task")],
-                ))
+              onTap: ()=>_addTask(context),
+              child: Row(
+                children: [
+                  Container(child: const Icon(Icons.add,size: 25),padding: const EdgeInsets.all(10)),
+                  const Text("New Task",style: TextStyle(fontSize: 25))
+                ],
+              )
+            )
           ],
         ));
   }
