@@ -31,12 +31,12 @@ class MyTodoApp extends StatefulWidget {
 class _MyTodoAppState extends State<MyTodoApp> {
   final List<TaskTile> _taskLists = [
     TaskTile(Icons.air, "Today's task", <Task>[
-      Task("task1","1/23",true), 
-      Task("task2","2/4",false)
+      Task("task1",DateTime(2020,9,7,0,0),true), 
+      Task("task2",DateTime(2021,3,30,0,0),false)
     ]), 
     TaskTile(Icons.games,"Game to buy",<Task>[
-      Task("task3","4/3",false), 
-      Task("task4","12/12",true)
+      Task("task3",DateTime(2021,2,3,0,0),false), 
+      Task("task4",DateTime(2020,11,14,0,0),true)
     ])
   ];
 

@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 
 class Task extends Object {
   final String taskName;
-  final String deadline;
+  final DateTime deadline;
   bool isDone;
 
   Task(this.taskName, this.deadline, this.isDone);
