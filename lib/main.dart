@@ -53,6 +53,50 @@ class _MyTodoAppState extends State<MyTodoApp> {
     }); 
   }
 
+  Widget _itemBuilder(context,index) {
+    return Dismissible(  
+      background: Container(  
+        color: Colors.red,
+        child: const Icon(Icons.delete,color: Colors.white), 
+        alignment: const Alignment(1, 0),
+        padding: const EdgeInsets.all(10),
+      ),
+      onDismissed: (DismissDirection direction) {
+        setState((){
+          _taskLists.removeAt(index); 
+        }); 
+      },
+      key: ValueKey<TaskTile>(_taskLists[index]),
+      child: ListTile(
+        leading: Icon(_taskLists[index].icon),
+        title: Text(_taskLists[index].listName),
+        onTap: () {
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (context,animation,secondaryAnimation) {
+                return TaskList(  
+                  listName: _taskLists[index].listName, 
+                  tasks: _taskLists[index].tasks
+                ); 
+              },
+              transitionsBuilder: (context,animation,secondaryAnimation,child) {
+                final Animatable<Offset> tween = Tween(  
+                  begin: const Offset(1.0,0.0), 
+                  end: const Offset(0,0), 
+                ).chain(CurveTween(curve: Curves.easeInOut)); 
+                final Animation<Offset> offsetAnimation = animation.drive(tween); 
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child
+                ); 
+              }
+            )
+          );
+        },
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,37 +107,11 @@ class _MyTodoAppState extends State<MyTodoApp> {
         body: Column(
           children: [
             Flexible(
-                child: ListView.builder(
-                    itemCount: _taskLists.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: Icon(_taskLists[index].icon),
-                        title: Text(_taskLists[index].listName),
-                        onTap: () {
-                          Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (context,animation,secondaryAnimation) {
-                              return TaskList(  
-                                listName: _taskLists[index].listName, 
-                                tasks: _taskLists[index].tasks
-                              ); 
-                            },
-                            transitionsBuilder: (context,animation,secondaryAnimation,child) {
-                              final Animatable<Offset> tween = Tween(  
-                                begin: const Offset(1.0,0.0), 
-                                end: const Offset(0,0), 
-                              ).chain(CurveTween(curve: Curves.easeInOut)); 
-                              final Animation<Offset> offsetAnimation = animation.drive(tween); 
-                              return SlideTransition(
-                                position: offsetAnimation,
-                                child: child
-                              ); 
-                            }
-                          )
-                          );
-                        },
-                      );
-                    })),
+              child: ListView.builder(
+                itemCount: _taskLists.length,
+                itemBuilder: _itemBuilder
+              )
+            ),
             InkWell(
                 // onTap: () {
                 //   Navigator.push(context, MaterialPageRoute(builder: (context) {
