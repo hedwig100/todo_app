@@ -55,6 +55,34 @@ class _MyTodoAppState extends State<MyTodoApp> {
     }
   }
 
+  void _toTaskTile(context,index) async {
+    final _taskTile = await Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context,animation,secondaryAnimation) {
+          return TaskList(  
+            listName: _taskLists[index].listName, 
+            tasks: _taskLists[index].tasks
+          ); 
+        },
+        transitionsBuilder: (context,animation,secondaryAnimation,child) {
+          final Animatable<Offset> tween = Tween(  
+            begin: const Offset(1.0,0.0), 
+            end: const Offset(0,0), 
+          ).chain(CurveTween(curve: Curves.easeInOut)); 
+          final Animation<Offset> offsetAnimation = animation.drive(tween); 
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child
+          ); 
+        }
+      )
+    );
+
+    setState((){
+      _taskLists[index] = _taskTile; 
+    }); 
+  }
+
   Widget _itemBuilder(context,index) {
     return Dismissible(  
       background: Container(  
@@ -72,29 +100,7 @@ class _MyTodoAppState extends State<MyTodoApp> {
       child: ListTile(
         leading: Icon(_taskLists[index].icon),
         title: Text(_taskLists[index].listName),
-        onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context,animation,secondaryAnimation) {
-                return TaskList(  
-                  listName: _taskLists[index].listName, 
-                  tasks: _taskLists[index].tasks
-                ); 
-              },
-              transitionsBuilder: (context,animation,secondaryAnimation,child) {
-                final Animatable<Offset> tween = Tween(  
-                  begin: const Offset(1.0,0.0), 
-                  end: const Offset(0,0), 
-                ).chain(CurveTween(curve: Curves.easeInOut)); 
-                final Animation<Offset> offsetAnimation = animation.drive(tween); 
-                return SlideTransition(
-                  position: offsetAnimation,
-                  child: child
-                ); 
-              }
-            )
-          );
-        },
+        onTap: () => _toTaskTile(context, index)
       )
     );
   }

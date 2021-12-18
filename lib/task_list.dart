@@ -15,6 +15,7 @@ class TaskList extends StatefulWidget {
 class _TaskListState extends State<TaskList> { 
   late List<Task> _tasks;
   late String _listName;
+  final _formKey = GlobalKey<FormState>(); 
 
   @override
   void initState() {
@@ -92,7 +93,18 @@ class _TaskListState extends State<TaskList> {
         ),
         body: Column(
           children: [
-            Text(_listName, style: const TextStyle(fontSize: 30)),
+            Form(  
+              key: _formKey, 
+              child: TextFormField(
+                initialValue: _listName,
+                style: const TextStyle(fontSize: 30),
+                decoration: null,
+                onChanged: (text) {
+                  setState((){_listName = text;}); 
+                },
+              )
+            ),
+            // Text(_listName, style: const TextStyle(fontSize: 30)),
             Flexible(
                 child: ListView.builder(
               itemCount: _tasks.length,
