@@ -55,6 +55,31 @@ class _TaskListState extends State<TaskList> {
     });
   }
 
+  Widget _itemBuilder(context,index) {
+    return Dismissible(
+      background: Container(  
+        color: Colors.red,
+        child: const Icon(Icons.delete,color: Colors.white), 
+        alignment: const Alignment(1, 0),
+        padding: const EdgeInsets.all(10),
+      ),
+      onDismissed: (DismissDirection direction) {
+        setState((){
+          _tasks.removeAt(index); 
+        }); 
+      },
+      key: ValueKey<Task>(_tasks[index]),
+      child: ListTile(
+        leading: Checkbox(  
+          value: _tasks[index].isDone,
+          onChanged: (e) => {setState((){_tasks[index].isDone = e!;})},
+        ),
+        title: Text(_tasks[index].taskName),
+        trailing: const Icon(Icons.star),
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,16 +96,7 @@ class _TaskListState extends State<TaskList> {
             Flexible(
                 child: ListView.builder(
               itemCount: _tasks.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Checkbox(  
-                    value: _tasks[index].isDone,
-                    onChanged: (e) => {setState((){_tasks[index].isDone = e!;})},
-                  ),
-                  title: Text(_tasks[index].taskName),
-                  trailing: const Icon(Icons.star),
-                );
-              },
+              itemBuilder: _itemBuilder,
             )),
             InkWell(
                 onTap: ()=>_addTask(context), 
