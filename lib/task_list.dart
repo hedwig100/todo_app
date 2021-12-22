@@ -103,7 +103,13 @@ class _TaskListState extends State<TaskList> {
         ),
         onTap: ()=>_toTaskDetail(context, index),
         title: Text(_tasks[index].taskName),
-        trailing: const Icon(Icons.star),
+        trailing: IconButton(
+          color: _tasks[index].isImportant ? Colors.yellow : Colors.grey,
+          icon: const Icon(Icons.star), 
+          onPressed: () {
+            setState((){_tasks[index].isImportant = !_tasks[index].isImportant;});
+          },
+        ),
       )
     );
   }

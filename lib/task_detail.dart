@@ -106,6 +106,23 @@ class _TaskDetailState extends State<TaskDetail> {
         ]));
   }
 
+  Widget _importantView() {
+    return Padding(  
+      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 4),
+      child: Row(children: [  
+        IconButton(  
+          iconSize: 25,
+          color: widget.task.isImportant ? Colors.yellow : Colors.grey,
+          icon: const Icon(Icons.star), 
+          onPressed: () {
+            setState((){widget.task.isImportant = !widget.task.isImportant;});
+          },
+        ),
+        const Text("Important task",style: TextStyle(fontSize: 25))
+      ],)
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,14 +136,7 @@ class _TaskDetailState extends State<TaskDetail> {
         children: [
           _taskNameView(),
           _dateView(),
-          Row(
-            children: [
-              Container(
-                  child: const Icon(Icons.star, size: 25),
-                  padding: const EdgeInsets.all(12.0)),
-              const Text("important task", style: TextStyle(fontSize: 25))
-            ],
-          ),
+          _importantView(),
           _memoView()
         ],
       ),

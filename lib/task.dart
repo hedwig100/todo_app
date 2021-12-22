@@ -4,6 +4,7 @@ class Task extends Object {
   String taskName;
   DateTime deadline;
   bool isDone;
+  bool isImportant = false; 
   String memo = "";  
 
   Task(this.taskName, this.deadline, this.isDone);
