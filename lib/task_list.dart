@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:todo_app/add_task.dart";
 import "package:todo_app/task.dart";
+import "package:todo_app/task_detail.dart";
 
 class TaskList extends StatefulWidget {
   const TaskList({Key? key,required this.tasks,required this.listName})
@@ -40,7 +41,7 @@ class _TaskListState extends State<TaskList> {
         }, 
         transitionsBuilder: (context,animation,secandaryAnimation,child) {
           final Animatable<Offset> tween = Tween(  
-            begin: const Offset(1.0,0.0), 
+            begin: const Offset(0.0,1.0), 
             end: const Offset(0,0), 
           ).chain(CurveTween(curve: Curves.easeInOut)); 
           final Animation<Offset> offsetAnimation = animation.drive(tween); 
@@ -54,6 +55,31 @@ class _TaskListState extends State<TaskList> {
     setState(() {
       _tasks.add(_task); 
     });
+  }
+
+  void _toTaskDetail(context,index) async {
+    final task = await Navigator.of(context).push(  
+      PageRouteBuilder(
+        pageBuilder: (context,animation,secondaryAnimation) {
+          return TaskDetail(task: _tasks[index],listName: widget.listName); 
+        }, 
+        transitionsBuilder: (context,animation,secandaryAnimation,child) {
+          final Animatable<Offset> tween = Tween(  
+            begin: const Offset(1.0,0.0), 
+            end: const Offset(0,0), 
+          ).chain(CurveTween(curve: Curves.easeInOut)); 
+          final Animation<Offset> offsetAnimation = animation.drive(tween); 
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child
+          ); 
+        }
+      )
+    ); 
+
+    setState((){
+      _tasks[index] = task; 
+    }); 
   }
 
   Widget _itemBuilder(context,index) {
@@ -75,6 +101,7 @@ class _TaskListState extends State<TaskList> {
           value: _tasks[index].isDone,
           onChanged: (e) => {setState((){_tasks[index].isDone = e!;})},
         ),
+        onTap: ()=>_toTaskDetail(context, index),
         title: Text(_tasks[index].taskName),
         trailing: const Icon(Icons.star),
       )
