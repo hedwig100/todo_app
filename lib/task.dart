@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 
 class Task extends Object {
   String taskName;
-  final DateTime deadline;
+  DateTime deadline;
   bool isDone;
   String memo = "";  
 

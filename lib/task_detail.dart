@@ -79,6 +79,31 @@ class _TaskDetailState extends State<TaskDetail> {
     );
   }
 
+  Widget _dateView() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: Row(children: [
+          IconButton(
+              iconSize: 20,
+              icon: const Icon(Icons.calendar_today),
+              onPressed: () async {
+                final date = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                  lastDate: DateTime.now().add(const Duration(days: 720)),
+                );
+                if (date != null) {
+                  setState(() {
+                    widget.task.deadline = date;
+                  });
+                }
+              }),
+          Text(widget.task.deadline.toString().split(" ")[0],
+              style: const TextStyle(fontSize: 20))
+        ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +116,7 @@ class _TaskDetailState extends State<TaskDetail> {
       body: Column(
         children: [
           _taskNameView(),
+          _dateView(),
           Row(
             children: [
               Container(
