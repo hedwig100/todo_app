@@ -2,63 +2,107 @@ import "package:flutter/material.dart";
 import "package:todo_app/task.dart";
 
 class TaskDetail extends StatefulWidget {
-  const TaskDetail({Key? key, required this.task,required this.listName}) : super(key: key);
+  const TaskDetail({Key? key, required this.task, required this.listName})
+      : super(key: key);
   final Task task;
-  final String listName; 
+  final String listName;
 
   @override
   _TaskDetailState createState() => _TaskDetailState();
 }
 
 class _TaskDetailState extends State<TaskDetail> {
-  final _formKey = GlobalKey<FormState>(); 
-
+  final _taskFormKey = GlobalKey<FormState>();
+  final _memoFormKey = GlobalKey<FormState>();
   void _backList(context) {
-    Navigator.of(context).pop(widget.task); 
+    Navigator.of(context).pop(widget.task);
   }
 
   Widget _taskNameView() {
-    return SizedBox(  
-      height: 40,
-      child: Row(
-        children: [  
-          Checkbox(  
-            value: widget.task.isDone, 
-            onChanged: (e)=>{setState((){widget.task.isDone = e!;})},
-          ), 
-          Flexible(child: Form(  
-              key: _formKey, 
-              child: TextFormField(  
-                initialValue: widget.task.taskName,
-                style: const TextStyle(fontSize: 30),
-                decoration: null,
-                onChanged: (text) {
-                  setState((){widget.task.taskName = text;}); 
-                },
-              )
-            )
-          )
-        ],
-      ) 
-    ); 
+    return SizedBox(
+        height: 100,
+        child: Row(
+          children: [
+            Checkbox(
+              value: widget.task.isDone,
+              onChanged: (e) => {
+                setState(() {
+                  widget.task.isDone = e!;
+                })
+              },
+            ),
+            Flexible(
+                child: Form(
+                    key: _taskFormKey,
+                    child: TextFormField(
+                      initialValue: widget.task.taskName,
+                      style: const TextStyle(fontSize: 30),
+                      decoration: null,
+                      onChanged: (text) {
+                        setState(() {
+                          widget.task.taskName = text;
+                        });
+                      },
+                    )))
+          ],
+        ));
+  }
+
+  Widget _memoView() {
+    return Column(
+      children: [
+        const Text("MEMO: ", style: TextStyle(fontSize: 25)),
+        SizedBox(
+            height: 200,
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: Form(
+                    key: _memoFormKey,
+                    child: TextFormField(
+                      initialValue: widget.task.memo,
+                      style: const TextStyle(fontSize: 25),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'write a memo about this task',
+                      ),
+                      onChanged: (text) {
+                        setState(() {
+                          widget.task.memo = text;
+                        });
+                      },
+                      keyboardType: TextInputType.multiline,
+                      minLines: 4,
+                      maxLines: 4,
+                    ))))
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  
-      appBar: AppBar(  
-        leading: TextButton(  
-          child: const Icon(Icons.arrow_back,color:Colors.white), 
-          onPressed: ()=>_backList(context),
-        ),
-        title: Text(widget.listName)
-      ),
+    return Scaffold(
+      appBar: AppBar(
+          leading: TextButton(
+            child: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => _backList(context),
+          ),
+          title: Text(widget.listName)),
       body: Column(
-        children: [  
+        children: [
           _taskNameView(),
-          Container()
+          Row(
+            children: [
+              Container(
+                  child: const Icon(Icons.star, size: 25),
+                  padding: const EdgeInsets.all(12.0)),
+              const Text("important task", style: TextStyle(fontSize: 25))
+            ],
+          ),
+          _memoView()
         ],
       ),
-    ); 
+      resizeToAvoidBottomInset: false,
+    );
   }
 }
