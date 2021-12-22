@@ -23,13 +23,15 @@ class _TaskDetailState extends State<TaskDetail> {
         height: 100,
         child: Row(
           children: [
-            Checkbox(
-              value: widget.task.isDone,
-              onChanged: (e) => {
-                setState(() {
-                  widget.task.isDone = e!;
-                })
-              },
+            Container(
+              child: Checkbox(
+                value: widget.task.isDone,
+                onChanged: (e) => {
+                  setState(() {
+                    widget.task.isDone = e!;
+                  })
+              }),
+              margin: const EdgeInsets.all(10.0)
             ),
             Flexible(
                 child: Form(
@@ -84,7 +86,7 @@ class _TaskDetailState extends State<TaskDetail> {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         child: Row(children: [
           IconButton(
-              iconSize: 20,
+              iconSize: 25,
               icon: const Icon(Icons.calendar_today),
               onPressed: () async {
                 final date = await showDatePicker(
@@ -100,7 +102,7 @@ class _TaskDetailState extends State<TaskDetail> {
                 }
               }),
           Text(widget.task.deadline.toString().split(" ")[0],
-              style: const TextStyle(fontSize: 20))
+              style: const TextStyle(fontSize: 25))
         ]));
   }
 
