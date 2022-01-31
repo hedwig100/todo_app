@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:todo_app/type_adapter/task.dart";
 import "package:todo_app/type_adapter/task_tile.dart";
 import "package:todo_app/type_adapter/data_time.dart";
-import "package:todo_app/type_adapter/icon_data.dart";
 import "package:todo_app/task_list.dart";
 import 'package:hive/hive.dart';
 import "package:hive_flutter/hive_flutter.dart";
@@ -12,8 +11,7 @@ Future<void> main() async {
   Hive.registerAdapter(TaskAdapter());
   Hive.registerAdapter(TaskTileAdapter());
   Hive.registerAdapter(DateTimeAdapter());
-  Hive.registerAdapter(IconDataAdapter());
-  var box = await Hive.openBox("mybox");
+  var box = await Hive.openBox("testbox");
   runApp(MyApp(box: box));
 }
 
@@ -58,14 +56,12 @@ class _MyTodoAppState extends State<MyTodoApp> {
   @override
   void initState() {
     super.initState();
-    print("initState");
     _taskLists = widget.box.get("todolist", defaultValue: []).cast<TaskTile>();
   }
 
   @override
   Future<void> dispose() async {
     await widget.box.close();
-    print("diposed");
     super.dispose();
   }
 
@@ -114,11 +110,12 @@ class _MyTodoAppState extends State<MyTodoApp> {
         onDismissed: (DismissDirection direction) {
           setState(() {
             _taskLists.removeAt(index);
+            widget.box.put("todolist", _taskLists);
           });
         },
         key: ValueKey<TaskTile>(_taskLists[index]),
         child: ListTile(
-            leading: Icon(_taskLists[index].icon),
+            leading: const Icon(Icons.blur_on_outlined),
             title: Text(_taskLists[index].listName),
             onTap: () => _toTaskTile(context, index)));
   }
