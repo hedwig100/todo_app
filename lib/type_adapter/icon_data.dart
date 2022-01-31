@@ -1,4 +1,4 @@
-import "package:hive/hive.dart"; 
+import "package:hive/hive.dart";
 import "package:flutter/material.dart";
 
 class IconDataAdapter extends TypeAdapter<IconData> {
@@ -12,7 +12,7 @@ class IconDataAdapter extends TypeAdapter<IconData> {
   }
 
   @override
-  void write(BinaryWriter writer,IconData obj) {
+  void write(BinaryWriter writer, IconData obj) {
     writer.writeInt(obj.codePoint);
   }
 }

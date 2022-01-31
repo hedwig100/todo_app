@@ -1,4 +1,4 @@
-import "package:hive/hive.dart"; 
+import "package:hive/hive.dart";
 
 class DateTimeAdapter extends TypeAdapter<DateTime> {
   @override
