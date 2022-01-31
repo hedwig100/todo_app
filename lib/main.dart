@@ -1,8 +1,14 @@
 import "package:flutter/material.dart";
 import "package:todo_app/task.dart";
+import "package:todo_app/task_tile.dart";
 import "package:todo_app/task_list.dart";
+import 'package:hive/hive.dart'; 
+import "package:hive_flutter/hive_flutter.dart";
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(TaskTileAdapter()); 
   runApp(const MyApp());
 }
 
