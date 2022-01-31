@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:todo_app/add_task.dart";
 import "package:todo_app/task.dart";
+import "package:todo_app/task_tile.dart";
 import "package:todo_app/task_detail.dart";
 
 class TaskList extends StatefulWidget {
@@ -52,6 +53,7 @@ class _TaskListState extends State<TaskList> {
         }
       )
     );  
+    if (_task == null) return; // appBarのとこで戻るとtaskがnullになる。
     setState(() {
       _tasks.add(_task); 
     });
