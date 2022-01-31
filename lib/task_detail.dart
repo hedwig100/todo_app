@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:todo_app/task.dart";
+import "package:todo_app/type_adapter/task.dart";
 
 class TaskDetail extends StatefulWidget {
   const TaskDetail({Key? key, required this.task, required this.listName})
@@ -24,15 +24,14 @@ class _TaskDetailState extends State<TaskDetail> {
         child: Row(
           children: [
             Container(
-              child: Checkbox(
-                value: widget.task.isDone,
-                onChanged: (e) => {
-                  setState(() {
-                    widget.task.isDone = e!;
-                  })
-              }),
-              margin: const EdgeInsets.all(10.0)
-            ),
+                child: Checkbox(
+                    value: widget.task.isDone,
+                    onChanged: (e) => {
+                          setState(() {
+                            widget.task.isDone = e!;
+                          })
+                        }),
+                margin: const EdgeInsets.all(10.0)),
             Flexible(
                 child: Form(
                     key: _taskFormKey,
@@ -107,20 +106,23 @@ class _TaskDetailState extends State<TaskDetail> {
   }
 
   Widget _importantView() {
-    return Padding(  
-      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 4),
-      child: Row(children: [  
-        IconButton(  
-          iconSize: 25,
-          color: widget.task.isImportant ? Colors.yellow : Colors.grey,
-          icon: const Icon(Icons.star), 
-          onPressed: () {
-            setState((){widget.task.isImportant = !widget.task.isImportant;});
-          },
-        ),
-        const Text("Important task",style: TextStyle(fontSize: 25))
-      ],)
-    );
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: Row(
+          children: [
+            IconButton(
+              iconSize: 25,
+              color: widget.task.isImportant ? Colors.yellow : Colors.grey,
+              icon: const Icon(Icons.star),
+              onPressed: () {
+                setState(() {
+                  widget.task.isImportant = !widget.task.isImportant;
+                });
+              },
+            ),
+            const Text("Important task", style: TextStyle(fontSize: 25))
+          ],
+        ));
   }
 
   @override
@@ -133,12 +135,7 @@ class _TaskDetailState extends State<TaskDetail> {
           ),
           title: Text(widget.listName)),
       body: Column(
-        children: [
-          _taskNameView(),
-          _dateView(),
-          _importantView(),
-          _memoView()
-        ],
+        children: [_taskNameView(), _dateView(), _importantView(), _memoView()],
       ),
       resizeToAvoidBottomInset: false,
     );
