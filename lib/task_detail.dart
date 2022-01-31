@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:todo_app/task.dart";
+import "package:todo_app/type_adapter/task.dart";
 
 class TaskDetail extends StatefulWidget {
   const TaskDetail({Key? key, required this.task, required this.listName})

@@ -1,19 +1,25 @@
 import "package:flutter/material.dart";
-import "package:todo_app/task.dart";
-import "package:todo_app/task_tile.dart";
+import "package:todo_app/type_adapter/task.dart";
+import "package:todo_app/type_adapter/task_tile.dart";
+import "package:todo_app/type_adapter/data_time.dart";
+import "package:todo_app/type_adapter/icon_data.dart";
 import "package:todo_app/task_list.dart";
 import 'package:hive/hive.dart'; 
 import "package:hive_flutter/hive_flutter.dart";
 
-void main() async {
+Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
-  Hive.registerAdapter(TaskTileAdapter()); 
-  runApp(const MyApp());
+  Hive.registerAdapter(TaskTileAdapter());
+  Hive.registerAdapter(DateTimeAdapter()); 
+  Hive.registerAdapter(IconDataAdapter()); 
+  var box = await Hive.openBox("mybox");
+  runApp(MyApp(box: box));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key,required this.box}) : super(key: key);
+  final Box box; 
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +28,47 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyTodoApp(title: "Todo App"));
+        home: MyTodoApp(title: "Todo App",box: box));
   }
 }
 
 class MyTodoApp extends StatefulWidget {
-  const MyTodoApp({Key? key, required this.title}) : super(key: key);
+  const MyTodoApp({Key? key, required this.title,required this.box}) : super(key: key);
   final String title;
+  final Box box; 
 
   @override
   _MyTodoAppState createState() => _MyTodoAppState();
 }
 
 class _MyTodoAppState extends State<MyTodoApp> {
-  final List<TaskTile> _taskLists = [
-    TaskTile(Icons.air, "Today's task", <Task>[
-      Task("task1",DateTime(2020,9,7,0,0),true), 
-      Task("task2",DateTime(2021,3,30,0,0),false)
-    ]), 
-    TaskTile(Icons.games,"Game to buy",<Task>[
-      Task("task3",DateTime(2021,2,3,0,0),false), 
-      Task("task4",DateTime(2020,11,14,0,0),true)
-    ])
-  ];
+  late List<TaskTile> _taskLists; 
+  // final List<TaskTile> _taskLists = [
+  //   TaskTile(Icons.air, "Today's task", <Task>[
+  //     Task("task1",DateTime(2020,9,7,0,0),true), 
+  //     Task("task2",DateTime(2021,3,30,0,0),false)
+  //   ]), 
+  //   TaskTile(Icons.games,"Game to buy",<Task>[
+  //     Task("task3",DateTime(2021,2,3,0,0),false), 
+  //     Task("task4",DateTime(2020,11,14,0,0),true)
+  //   ])
+  // ];
 
-  void _addTaskList(context) async {
+  @override
+  void initState() {
+    super.initState(); 
+    print("initState");
+    _taskLists = widget.box.get("todolist",defaultValue: []).cast<TaskTile>();
+  }
+
+  @override 
+  Future<void> dispose() async {
+    await widget.box.close();
+    print("diposed");
+    super.dispose();
+  }
+
+  Future<void> _addTaskList(context) async {
     final _taskTile = await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return TaskList(
           listName: "New Task List", 
@@ -56,12 +78,13 @@ class _MyTodoAppState extends State<MyTodoApp> {
 
     if (!_taskTile.tasks.isEmpty) {
       setState((){
-        _taskLists.add(_taskTile); 
+        _taskLists.add(_taskTile);
+        widget.box.put("todolist",_taskLists);
       }); 
     }
   }
 
-  void _toTaskTile(context,index) async {
+  Future<void> _toTaskTile(context,index) async {
     final _taskTile = await Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context,animation,secondaryAnimation) {
@@ -83,9 +106,10 @@ class _MyTodoAppState extends State<MyTodoApp> {
         }
       )
     );
-
+    
     setState((){
       _taskLists[index] = _taskTile; 
+      widget.box.put("todolist",_taskLists);
     }); 
   }
 

@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:hive/hive.dart";
-import "package:todo_app/task.dart";
+import "package:todo_app/type_adapter/task.dart";
 part "task_tile.g.dart";
 
 @HiveType(typeId : 2)

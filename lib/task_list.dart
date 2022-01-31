@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:todo_app/add_task.dart";
-import "package:todo_app/task.dart";
-import "package:todo_app/task_tile.dart";
+import "package:todo_app/type_adapter/task.dart";
+import "package:todo_app/type_adapter/task_tile.dart";
 import "package:todo_app/task_detail.dart";
 
 class TaskList extends StatefulWidget {
