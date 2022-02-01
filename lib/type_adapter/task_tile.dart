@@ -1,18 +1,14 @@
-import "package:flutter/material.dart";
 import "package:hive/hive.dart";
 import "package:todo_app/type_adapter/task.dart";
 part "task_tile.g.dart";
 
 @HiveType(typeId: 2)
-class TaskTile extends Object {
-  @HiveField(0)
-  final IconData icon;
-
-  @HiveField(1)
+class TaskTile extends HiveObject {
+  @HiveField(0, defaultValue: "")
   final String listName;
 
-  @HiveField(2)
+  @HiveField(1, defaultValue: [])
   final List<Task> tasks;
 
-  TaskTile(this.icon, this.listName, this.tasks);
+  TaskTile(this.listName, this.tasks);
 }

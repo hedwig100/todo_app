@@ -17,21 +17,18 @@ class TaskTileAdapter extends TypeAdapter<TaskTile> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TaskTile(
-      fields[0] as IconData,
-      fields[1] as String,
-      (fields[2] as List).cast<Task>(),
+      fields[0] == null ? '' : fields[0] as String,
+      fields[1] == null ? [] : (fields[1] as List).cast<Task>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, TaskTile obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.icon)
-      ..writeByte(1)
-      ..write(obj.listName)
       ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.listName)
+      ..writeByte(1)
       ..write(obj.tasks);
   }
 

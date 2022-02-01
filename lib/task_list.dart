@@ -27,8 +27,7 @@ class _TaskListState extends State<TaskList> {
   }
 
   void _backHome(context) {
-    Navigator.of(context)
-        .pop(TaskTile(Icons.blur_on_outlined, _listName, _tasks));
+    Navigator.of(context).pop(TaskTile(_listName, _tasks));
   }
 
   void _addTask(context) async {
