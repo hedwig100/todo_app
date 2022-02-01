@@ -2,4 +2,4 @@
 
 simple todo app with Flutter
 
-![sample demo](https://user-images.githubusercontent.com/63095789/151905093-e2b980d8-49a6-4ba6-af2c-ab014f8a2105.mp4)
+![sample demo](https://user-images.githubusercontent.com/63095789/151906099-2738b9da-9ecf-4960-914a-9f6c62c405df.gif)
